@@ -1,0 +1,41 @@
+name: .NET CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          
+      - name: Restore dependencies
+        run: dotnet restore
+        
+      - name: Build the application
+        run: dotnet build --configuration Release --no-restore
+        
+      - name: Run application (includes CRUD tests)
+        run: dotnet run --configuration Release --no-build
+        
+      - name: Test database creation
+        run: |
+          if [ -f "app.db" ]; then
+            echo "✓ SQLite database created successfully"
+            ls -la app.db
+          else
+            echo "✗ SQLite database not found"
+            exit 1
+          fi
