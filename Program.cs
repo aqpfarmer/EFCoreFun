@@ -56,7 +56,7 @@ using (var context = new AppDbContext())
 	if (charlie != null)
 	{
 		Console.WriteLine($"\nRecord for 'Charlie':");
-		Console.WriteLine($"{charlie.Name} - {charlie.DepartmentName}");
+		Console.WriteLine($"{charlie.Name} - {charlie.DepartmentName}. Our mission was a success!");
 	}
 	else
 	{
